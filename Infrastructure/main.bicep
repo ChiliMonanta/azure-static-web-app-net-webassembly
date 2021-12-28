@@ -16,7 +16,7 @@ resource staticWebApp 'Microsoft.Web/staticSites@2021-02-01' = {
   }
   properties: {
     allowConfigFileUpdates: false
-    stagingEnvironmentPolicy: 'Disabled'
+    stagingEnvironmentPolicy: 'Enabled'
     buildProperties: {
       skipGithubActionWorkflowGeneration: true
     }
