@@ -5,12 +5,6 @@
       "location": {
         "value": "westeurope"
       },
-      "repositoryUrl": {
-        "value": "https://github.com/ChiliMonanta/my-first-static-blazor-app"
-      },
-      "repositoryBranch": {
-        "value": "main"
-      },
       "appName": {
         "value": "myWebAssembly"
       }

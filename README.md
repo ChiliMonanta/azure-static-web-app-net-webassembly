@@ -1,30 +1,28 @@
-# Blazor Starter Application
+# Blazor WebAssembly - Hello world - Static Web Apps
 
-This template contains an example [Blazor WebAssembly](https://docs.microsoft.com/aspnet/core/blazor/?view=aspnetcore-3.1#blazor-webassembly) client application, a C# [Azure Functions](https://docs.microsoft.com/azure/azure-functions/functions-overview) and a C# class library with shared code.
+This template contains an example [Blazor WebAssembly](https://docs.microsoft.com/aspnet/core/blazor/?view=aspnetcore-3.1#blazor-webassembly) client application, a C# [Azure Functions](https://docs.microsoft.com/azure/azure-functions/functions-overview) and a C# class library with shared code. The infrastructure is created with [bicep](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/).
 
-## Getting Started
 
-Create a repository from the [GitHub template](https://docs.github.com/en/enterprise/2.22/user/github/creating-cloning-and-archiving-repositories/creating-a-repository-from-a-template) and then clone it locally to your machine.
-
-Once you clone the project, open the solution in [Visual Studio](https://visualstudio.microsoft.com/vs/community/) and press **F5** to launch both the client application and the Functions API app.
-
-_Note: If you're using the Azure Functions CLI tools, refer to [the documentation](https://docs.microsoft.com/azure/azure-functions/functions-run-local?tabs=windows%2Ccsharp%2Cbash) on how to enable CORS._
-
-## Template Structure
+## Folder structure
 
 * **Client**: The Blazor WebAssembly sample application
-* **API**: A C# Azure Functions API, which the Blazor application will call
+* **API**:  A C# Azure Functions API, which the Blazor application will call
 * **Shared**: A C# class library with a shared data model between the Blazor and Functions application
+* **Infrastructure**: Infrastructure by code, a bicep template
+* **.github/workflows7deploy**: A github actions for deployment
 
-## Deploy to Azure Static Web Apps
+## Deployment
+Before a deploy of static web apps code can be done, you have to create the infrastructure (see below). The github action needs a secret to be able to deploy to the static web app. Copy the deployment token (on the static web app overview) and create a secret in github called "AZURE_STATIC_WEB_APPS_API_TOKEN"
 
-This application can be deployed to [Azure Static Web Apps](https://docs.microsoft.com/azure/static-web-apps), to learn how, check out [our quickstart guide](https://aka.ms/blazor-swa/quickstart).
+### Create infrastructure
 
+First deploy infrastructure with biceps
 
+```
 az login
 az account set --subscription <SUBSCRIPTION-ID-OR-SUBSCRIPTION-NAME>
 
-resourceGroupName="myfirstswadeployRG"
+resourceGroupName="<resource group name>"
 az group create --name $resourceGroupName --location "westeurope"
 
 az deployment group create \
@@ -34,3 +32,12 @@ az deployment group create \
 --parameters main.parameters.json \
 --what-if \
 --verbose
+```
+
+### Deploy to Azure Static Web Apps
+
+At this time the only option is to deploy with github actions
+
+Not supported:
+* Deploy with vscode (works if you link static app is linked to github, this is not done in this example)
+* Deploy with az cli (MS work in progress)
