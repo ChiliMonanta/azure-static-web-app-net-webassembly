@@ -1,0 +1,51 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "metadata": {
+    "_generator": {
+      "name": "bicep",
+      "version": "0.4.1124.51302",
+      "templateHash": "6513056699812167517"
+    }
+  },
+  "parameters": {
+    "repositoryUrl": {
+      "type": "string"
+    },
+    "repositoryBranch": {
+      "type": "string"
+    },
+    "skuName": {
+      "type": "string",
+      "defaultValue": "Free"
+    },
+    "skuTier": {
+      "type": "string",
+      "defaultValue": "Free"
+    }
+  },
+  "variables": {
+    "location": "northeurope",
+    "appName": "myWebAssembly"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Web/staticSites",
+      "apiVersion": "2021-02-01",
+      "name": "[variables('appName')]",
+      "location": "[variables('location')]",
+      "tags": {},
+      "sku": {
+        "name": "[parameters('skuName')]",
+        "tier": "[parameters('skuTier')]"
+      },
+      "properties": {
+        "repositoryUrl": "[parameters('repositoryUrl')]",
+        "branch": "[parameters('repositoryBranch')]",
+        "buildProperties": {
+          "skipGithubActionWorkflowGeneration": true
+        }
+      }
+    }
+  ]
+}
