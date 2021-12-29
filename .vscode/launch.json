@@ -1,18 +1,27 @@
 {
   "version": "0.2.0",
+  "compounds": [
+    {
+      "name": "Static Web App",
+      "configurations": [
+        "AzureFunctions",
+        "WebAssemblyApp"
+      ]
+    }
+  ],
   "configurations": [
     {
-      "name": "Attach to .NET Functions",
+      "name": "AzureFunctions",
       "type": "coreclr",
       "request": "attach",
       "processId": "${command:azureFunctions.pickProcess}"
     },
     {
-      "name": "WebAssembly App",
+      "name": "WebAssemblyApp",
       "type": "blazorwasm",
       "request": "launch",
       "url": "http://localhost:5000",
       "cwd": "${workspaceFolder}/Client",
-  }
+    }
   ]
 }
