@@ -1,6 +1,7 @@
-# Blazor WebAssembly - Hello world - Static Web Apps
+# Blazor WebAssembly - Hello world - Static Web Apps - C#
 
-This template contains an example [Blazor WebAssembly](https://docs.microsoft.com/aspnet/core/blazor/?view=aspnetcore-3.1#blazor-webassembly) client application, a C# [Azure Functions](https://docs.microsoft.com/azure/azure-functions/functions-overview) and a C# class library with shared code. The infrastructure is created with [bicep](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/).
+
+This is an example of [Blazor WebAssembly](https://docs.microsoft.com/en-us/aspnet/core/blazor/?view=aspnetcore-6.0#blazor-webassembly) client application and an API, all hosted in a single [Azure Static Web Apps](https://docs.microsoft.com/en-us/azure/static-web-apps/). Both Client and the Api is written C#. The infrastructure is created with [Bicep](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/). The deployments use staging environments and is done with Github actions. This example is based on the template [staticwebdev](https://github.com/staticwebdev/blazor-starter/generate) for more information see https://docs.microsoft.com/en-us/azure/static-web-apps/deploy-blazor.
 
 
 ## Folder structure
@@ -9,14 +10,14 @@ This template contains an example [Blazor WebAssembly](https://docs.microsoft.co
 * **API**:  A C# Azure Functions API, which the Blazor application will call
 * **Shared**: A C# class library with a shared data model between the Blazor and Functions application
 * **Infrastructure**: Infrastructure by code, a bicep template
-* **.github/workflows7deploy**: A github actions for deployment
+* **.github/workflows/deploy-static-web-app.yml**: A github actions for deployment
 
 ## Deployment
-Before a deploy of static web apps code can be done, you have to create the infrastructure (see below). The github action needs a secret to be able to deploy to the static web app. Copy the deployment token (on the static web app overview) and create a secret in github called "AZURE_STATIC_WEB_APPS_API_TOKEN"
+Before a deploy of Static Web Apps code can be done, you have to create the infrastructure (see below). The github action needs a secret to be able to deploy to the static web app. Copy the deployment token (on the static web app overview) and create a secret in github called "AZURE_STATIC_WEB_APPS_API_TOKEN"
 
-### Create infrastructure
+### Create the infrastructure
 
-First deploy infrastructure with biceps
+First deploy infrastructure with bicep
 
 ```
 az login
@@ -30,14 +31,38 @@ az deployment group create \
 --resource-group $resourceGroupName \
 --template-file main.bicep \
 --parameters main.parameters.json \
---what-if \
 --verbose
 ```
 
 ### Deploy to Azure Static Web Apps
 
-At this time the only option is to deploy with github actions
+At this time the only option is to deploy with github actions, see .github/workflows/deploy-static-web-app.yml.
 
 Not supported:
 * Deploy with vscode (works if you link static app is linked to github, this is not done in this example)
-* Deploy with az cli (MS work in progress)
+* Deploy with az cli
+
+### How it works
+On each PR a new staging environment is created on your Static Web App. If you browse to your Static Web App in the Azure portal you find the staging uri for your PR. When the PR is closed the staging environment (for your PR) is removed. Then the main branch is deployd automatically on the production environment.
+
+## How to Run locally:
+It should be possible to start this from vscode, in this example it's not finalized. So you have start each project manually. You need a tool called [Azure Functions Core tools](https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=v4%2Clinux%2Ccsharp%2Cportal%2Cbash%2Ckeda)
+which let run the azure functions locally.
+ 
+### Start the API
+```
+cd Api
+func start
+```
+
+### Start the Client
+```
+cd Client
+dotnet run
+```
+
+## Links:
+- https://docs.microsoft.com/en-us/azure/static-web-apps/deploy-blazor
+- https://docs.microsoft.com/en-us/aspnet/core/blazor/?view=aspnetcore-6.0#blazor-webassembly
+- https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/
+- https://docs.microsoft.com/en-us/azure/azure-functions/functions-run-local?tabs=v4%2Clinux%2Ccsharp%2Cportal%2Cbash%2Ckeda
