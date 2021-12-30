@@ -8,12 +8,18 @@ using System.Text.Json;
 
 namespace BlazorApp.Api;
 
-public static class HttpTriggerCSharp1
+public class HttpTrigger
 {
-    [Function("HttpTriggerCSharp1")]
-    public static async Task<HttpResponseData> Run(
-        [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "trigger")] HttpRequestData req,
-        ILogger log)
+    private readonly ILogger<HttpTrigger> log;
+
+    public HttpTrigger(ILoggerFactory loggerFactory)
+    {
+        log = loggerFactory.CreateLogger<HttpTrigger>();
+    }
+
+    [Function("HttpTrigger1")]
+    public async Task<HttpResponseData> Run(
+        [HttpTrigger(AuthorizationLevel.Function, "get", "post", Route = "trigger")] HttpRequestData req)
     {
         log.LogInformation("C# HTTP trigger function processed a request.");
 
@@ -21,8 +27,11 @@ public static class HttpTriggerCSharp1
         var name = query["name"];
 
         var requestBody = await new StreamReader(req.Body).ReadToEndAsync();
-        dynamic data = JsonSerializer.Deserialize<dynamic>(requestBody);
-        name = name ?? data?.name;
+        log.LogInformation($"-->> {requestBody}");
+        if (!string.IsNullOrEmpty(requestBody)) {
+            dynamic data = JsonSerializer.Deserialize<dynamic>(requestBody);
+            name = name ?? data?.name;
+        }
 
         string responseMessage = string.IsNullOrEmpty(name)
             ? "This HTTP triggered function executed successfully. Pass a name in the query string or in the request body for a personalized response."
