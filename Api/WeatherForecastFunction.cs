@@ -1,11 +1,9 @@
 using System;
 using System.Linq;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Azure.WebJobs;
-using Microsoft.Azure.WebJobs.Extensions.Http;
 using Microsoft.Extensions.Logging;
-
+using Microsoft.Azure.Functions.Worker;
+using Microsoft.Azure.Functions.Worker.Http;
+using System.Net;
 using BlazorApp.Shared;
 
 namespace BlazorApp.Api
@@ -32,22 +30,25 @@ namespace BlazorApp.Api
             return summary;
         }
 
-        [FunctionName("WeatherForecast")]
-        public static IActionResult Run(
-            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequest req,
+        [Function("WeatherForecast")]
+        public static HttpResponseData Run(
+            [HttpTrigger(AuthorizationLevel.Anonymous, "get", Route = null)] HttpRequestData req,
             ILogger log)
         {
             var randomNumber = new Random();
             var temp = 0;
 
             var result = Enumerable.Range(1, 5).Select(index => new WeatherForecast
-            {
-                Date = DateTime.Now.AddDays(index),
-                TemperatureC = temp = randomNumber.Next(-20, 55),
-                Summary = GetSummary(temp)
-            }).ToArray();
+                {
+                    Date = DateTime.Now.AddDays(index),
+                    TemperatureC = temp = randomNumber.Next(-20, 55),
+                    Summary = GetSummary(temp)
+                }).ToArray();
 
-            return new OkObjectResult(result);
+            var response = req.CreateResponse(HttpStatusCode.OK);
+            response.WriteAsJsonAsync(result);
+
+            return response;
         }
     }
 }
