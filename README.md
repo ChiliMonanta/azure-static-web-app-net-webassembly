@@ -39,7 +39,7 @@ az deployment group create \
 At this time the only option is to deploy with github actions, see .github/workflows/deploy-static-web-app.yml.
 
 Not supported:
-* Deploy with vscode (works if you link static app is linked to github, this is not done in this example)
+* Deploy with vscode (works if you link static app to github, this is not done in this example)
 * Deploy with az cli
 
 ### How it works
