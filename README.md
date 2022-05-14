@@ -1,8 +1,14 @@
 # Blazor WebAssembly - Hello world - Static Web Apps - C#
 
-
 This is an example of [Blazor WebAssembly](https://docs.microsoft.com/en-us/aspnet/core/blazor/?view=aspnetcore-6.0#blazor-webassembly) client application and an API, all hosted in a single [Azure Static Web Apps](https://docs.microsoft.com/en-us/azure/static-web-apps/). Both Client and the Api is written C#. The infrastructure is created with [Bicep](https://docs.microsoft.com/en-us/azure/azure-resource-manager/bicep/). The deployments use staging environments and is done with Github actions. This example is based on the template [staticwebdev](https://github.com/staticwebdev/blazor-starter/generate) for more information see https://docs.microsoft.com/en-us/azure/static-web-apps/deploy-blazor.
 
+Static Web Apps can can be written in many different languages.
+Here are some examples:
+| Frontend | Backend | Repo |
+|------------|---------|-----|
+| TypeScript + React | TypeScript | [Ts + Ts](https://github.com/ChiliMonanta/azure-static-web-app-react-react)|
+| TypeScript + React | C# | [C# + Ts](https://github.com/ChiliMonanta/azure-static-web-app-net-react)|
+| C# + html | C# | [WebAssembly](https://github.com/ChiliMonanta/azure-static-web-app-net-webassembly)|
 
 ## Folder structure
 
